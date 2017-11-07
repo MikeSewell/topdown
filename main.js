@@ -1,99 +1,113 @@
 window.addEventListener("load", e => {
-
+    
     let assign = new Run();
-
-
+    
+    
 });
-
-
 class Run {
     constructor() {
-        let data = {};
-        this.tempLow = ""
-        this.tempHigh = ""
-        this.tempNow = ""
+        this.getGeo()
+        this.getHL()
+        this.getCurrTemp()
+        this.getHourly()
+        this.showData()
+        // this.viewMap()
+        // google.maps.event.addDomListener(window, "load", init_map)
 
-        this.getdata2()
-        this.getdata3()
-        this.getdata4()
-        geoFindMe()
     }
-    getdata2() {
-        let url = "http://api.wunderground.com/api/47e6f06078fb48ae/forecast/q/CA/San_Francisco.json"
-
-        // "http://api.wunderground.com/api/47e6f06078fb48ae/hourly/q/CA/San_Francisco.json"
-        // "http://api.wunderground.com/api/47e6f06078fb48ae/conditions/q/CA/San_Francisco.json"
-
+    // get high and low temp
+    getHL() {
+        let url = 'http://api.wunderground.com/api/47e6f06078fb48ae/forecast/q/' + localStorage.getItem("lat") + ',' + localStorage.getItem("lng") + '.json'
         fetch(url).then(function (response) {
             // Convert to JSON
             return response.json();
         }).then(function (j) {
-
-            let sec = document.querySelector("#sec")
-            
-            sec.insertAdjacentHTML('beforeend',`<p>Low: ${j.forecast.simpleforecast.forecastday[0].low.fahrenheit}</p>`)
-            sec.insertAdjacentHTML('beforeend',`<p>High: ${j.forecast.simpleforecast.forecastday[0].high.fahrenheit}</p>`)
+            localStorage.setItem('lowF', j.forecast.simpleforecast.forecastday[0].low.fahrenheit);
+            localStorage.setItem('highF', j.forecast.simpleforecast.forecastday[0].high.fahrenheit);
+            localStorage.setItem('lowC', j.forecast.simpleforecast.forecastday[0].low.celsius);
+            localStorage.setItem('highC', j.forecast.simpleforecast.forecastday[0].high.celsius);
         })
     }
-    getdata3() {
-        let url = "http://api.wunderground.com/api/47e6f06078fb48ae/conditions/q/CA/San_Francisco.json"
-        // "http://api.wunderground.com/api/47e6f06078fb48ae/forecast/q/CA/San_Francisco.json"
-        // "http://api.wunderground.com/api/47e6f06078fb48ae/hourly/q/CA/San_Francisco.json"
-
+    // get current temp
+    getCurrTemp() {
+        let url = "http://api.wunderground.com/api/47e6f06078fb48ae/conditions/q/" + localStorage.getItem("lat") + "," + localStorage.getItem("lng") + ".json"
         fetch(url).then(function (response) {
             // Convert to JSON
             return response.json();
         }).then(function (j) {
-            let sec = document.querySelector("#sec")
-
-            sec.insertAdjacentHTML('beforeend', `<p>Temp Now: ${j.current_observation.feelslike_f}</p>`)
+            console.log(j);
+            localStorage.setItem('currIcon', j.current_observation.icon);
+            localStorage.setItem('currTempF', j.current_observation.feelslike_f);
+            localStorage.setItem('currTempC', j.current_observation.feelslike_c);
         })
     }
-    getdata4() {
-        let url = "http://api.wunderground.com/api/47e6f06078fb48ae/hourly/q/CA/San_Francisco.json"
-        // "http://api.wunderground.com/api/47e6f06078fb48ae/conditions/q/CA/San_Francisco.json"
-        // "http://api.wunderground.com/api/47e6f06078fb48ae/forecast/q/CA/San_Francisco.json"
-
+    // get hourly data
+    getHourly() {
+        let url = "http://api.wunderground.com/api/47e6f06078fb48ae/hourly/q/" + localStorage.getItem("lat") + "," + localStorage.getItem("lng") + ".json"
         fetch(url).then(function (response) {
             // Convert to JSON
             return response.json();
         }).then(function (j) {
-            let sec = document.querySelector("#loop")
-            let data = j.hourly_forecast[0]
-
-            sec.insertAdjacentHTML('beforeend', `<p>Time: ${data.FCTTIME.civil}</p>`)
-            sec.insertAdjacentHTML('beforeend', `<p>Temp: ${data.temp.english}</p>`)
-            sec.insertAdjacentHTML('beforeend', `<p>Windspeed: ${data.wspd.english}</p>`)
-            sec.insertAdjacentHTML('beforeend', `<p>WindDir: ${data.wdir.degrees}</p>`)
+            let count = 0
+            localStorage.setItem("tempList", JSON.stringify(j))
         })
     }
-}
+    //display data
+    showData() {
+        let dash = document.querySelector("#main")
+        dash.insertAdjacentHTML("afterbegin", `<p id="low">${localStorage.getItem("lowF")}</p>`)
+        dash.insertAdjacentHTML("afterbegin", `<p id="currTemp">${localStorage.getItem("currIcon")}</p>`)
+        dash.insertAdjacentHTML("afterbegin", `<p id="high">${localStorage.getItem("highF")}</p>`)
 
-
-function geoFindMe() {
-    var output = document.getElementById("out");
-
-    if (!navigator.geolocation) {
-        // send to zip enter
-        return;
+        let list = document.querySelector("#hourTable")
+        let hour = JSON.parse(localStorage.getItem("tempList"))
+        console.log(hour);
+              
+        for (var i = 0; i < 9; i++) {
+            list.insertAdjacentHTML("beforeend", `<tr>
+                        <td>${hour.hourly_forecast[i].FCTTIME.civil}</td>
+                        <td>${hour.hourly_forecast[i].temp.english}</td>
+                        <td><img src="${hour.hourly_forecast[i].icon_url}" alt="weathericon"></td>
+                        <td>${hour.hourly_forecast[i].wspd.english} ${hour.hourly_forecast[i].wdir.dir}</td>
+                    </tr>`)
+        }
     }
-    function success(position) {
-        var latitude = position.coords.latitude;
-        var longitude = position.coords.longitude;
+    // get geoLocation
+    getGeo() {
+        let url = "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyAKTaI3tOSjLN-HO2XC0BOKbSWHa1zHWdY"
 
-        output.innerHTML = '<p>Latitude is ' + latitude + '° <br>Longitude is ' + longitude + '°</p>';
-
-        var img = new Image();
-        img.src = "https://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=13&size=300x300&sensor=false";
-
-        output.appendChild(img);
+        function reqListener() {
+            let d = JSON.parse(this.responseText);
+            localStorage.setItem('lat', d.location.lat.toFixed(1))
+            localStorage.setItem('lng', d.location.lng.toFixed(1))
+        }
+        var oReq = new XMLHttpRequest();
+        oReq.addEventListener("load", reqListener);
+        oReq.open("POST", url);
+        oReq.send();
     }
+    viewSet(){
 
-    function error() {
-        // send to enter zip
     }
+    // viewMap(){
+        
+    //     var var_location = new google.maps.LatLng(localStorage.getItem("lat"), localStorage.getItem("lng"))
+    //     var var_mapoptions = {
+    //         center: var_location,
+    //         zoom: 13, 
+    //         mapTypeId: google.maps.MapTypeId.ROADMAP,
+    //         mapTypeControl: false,
+    //         panControl: false,
+    //         rotateControl: false,
+    //         streetViewControl: false
+    //     }
+    //     var var_map = new google.maps.Map(
+    //         document.getElementById("map"),
+    //         var_mapoptions
+    //     )
+        
+    //     var_marker.setMap(var_map)
+        
 
-    output.innerHTML = "<p>Locating…</p>";
-
-    navigator.geolocation.getCurrentPosition(success, error);
+    // }
 }

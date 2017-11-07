@@ -5,21 +5,105 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <link rel="stylesheet" href="font-awesome.min.css">
+    <link rel="stylesheet" href="main.css">
+    <title>TopDown</title>
 </head>
 
 <body>
-    <h1>Sample Data for site!</h1>
-    <div id="out">
+    <div id="dashboard">
+        <div class="container">
+
+            <section id="main">
+                <p id="setIcon"><a href="#setting"><i class="fa fa-cog fa-spin fa-2x fa-fw"></i></a></p>
+
+            </section>
+        </div>
+        <section id="list">
+            <table>
+                <thead>
+                    <tr id="tHead">
+                        <th>Time</th>
+                        <th>Temp</th>
+                        <th>Sky</th>
+                        <th>Wind</th>
+                    </tr>
+                </thead>
+                <tbody id="hourTable">
+
+                </tbody>
+            </table>
+
+        </section>
 
     </div>
-    <div id="sec">
+    <div id="setting">
+        <h1>Settings</h1>
+        <div class="wrapper">
 
+            <section id="change">
+                <div class="row">
+                    <p>Temp Format C/F</p>
+                    <!-- Rounded switch -->
+                    <label class="switch">
+                        <input id="tempSelect" type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="row">
+                    <p>Time Format 24HR</p>
+                    <label class="switch">
+                        <input id="timeSelect" type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="row">
+                    <p>Auto Location</p>
+                    <label class="switch">
+                        <input id="autoGeo" type="checkbox" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="row">
+                    <p>Auto Fullscreen</p>
+                    <label class="switch">
+                        <input id="autoFull" type="checkbox" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="inputsec">
+                    <label for="zip">Zip</label><input type="tel" minlength="5" maxlength="5" name="zip" id="">
+                </div>
+                <div class="inputsec">
+                    <label for="email">Email</label><input type="text" name="email" id="">
+                </div>
+                <button type="button">Save</button>
+            </section>
+        </div>
+        <section>
+            <p id="aboutP">Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et,
+                porttitor at sem. Cras ultricies ligula sed magna dictum porta.</p>
+            <p id="aboutP2">Vivamus suscipit tortor eget felis porttitor volutpat. Curabitur non nulla</p>
+            <p class="me">Created By Mike Sewell</p>
+        </section>
     </div>
-    <div id="loop">
+    <section>
+        <h1>Favorites</h1>
 
-    </div>
+        <div class="wrapper">
+            <section id="favZip">
+                <label for="">Zip</label>
+                <input type="tel" minlength="5" maxlength="5" name="" id="">
+                <button type="button">Add</button>
+            </section>
+        </div>
+        <div id="map" class="map_canvas"></div>
+        <p class="me">Created By Mike Sewell</p>
+    </section>
     <script src="main.js"></script>
+    <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKTaI3tOSjLN-HO2XC0BOKbSWHa1zHWdY&callback=initMap"> -->
+
+    </script>
 </body>
 
 </html>
