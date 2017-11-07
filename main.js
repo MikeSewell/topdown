@@ -1,9 +1,11 @@
 window.addEventListener("load", e => {
-    
+
     let assign = new Run();
-    
-    
+    // init_map();
+
+
 });
+
 class Run {
     constructor() {
         this.getGeo()
@@ -11,8 +13,7 @@ class Run {
         this.getCurrTemp()
         this.getHourly()
         this.showData()
-        // this.viewMap()
-        // google.maps.event.addDomListener(window, "load", init_map)
+        this.init_map()
 
     }
     // get high and low temp
@@ -26,6 +27,8 @@ class Run {
             localStorage.setItem('highF', j.forecast.simpleforecast.forecastday[0].high.fahrenheit);
             localStorage.setItem('lowC', j.forecast.simpleforecast.forecastday[0].low.celsius);
             localStorage.setItem('highC', j.forecast.simpleforecast.forecastday[0].high.celsius);
+            localStorage.setItem('tempformat', true);
+
         })
     }
     // get current temp
@@ -48,29 +51,72 @@ class Run {
             // Convert to JSON
             return response.json();
         }).then(function (j) {
-            let count = 0
+            console.log(j);
             localStorage.setItem("tempList", JSON.stringify(j))
         })
     }
     //display data
     showData() {
         let dash = document.querySelector("#main")
-        dash.insertAdjacentHTML("afterbegin", `<p id="low">${localStorage.getItem("lowF")}</p>`)
-        dash.insertAdjacentHTML("afterbegin", `<p id="currTemp">${localStorage.getItem("currIcon")}</p>`)
         dash.insertAdjacentHTML("afterbegin", `<p id="high">${localStorage.getItem("highF")}</p>`)
+        dash.insertAdjacentHTML("afterbegin", `<p id="currTemp">${localStorage.getItem("currIcon")}</p>`)
+        dash.insertAdjacentHTML("afterbegin", `<p id="low">${localStorage.getItem("lowF")}</p>`)
 
         let list = document.querySelector("#hourTable")
         let hour = JSON.parse(localStorage.getItem("tempList"))
-        console.log(hour);
-              
         for (var i = 0; i < 9; i++) {
             list.insertAdjacentHTML("beforeend", `<tr>
-                        <td>${hour.hourly_forecast[i].FCTTIME.civil}</td>
-                        <td>${hour.hourly_forecast[i].temp.english}</td>
+                        <td id="hrt${i}">${hour.hourly_forecast[i].FCTTIME.civil}</td>
+                        <td id="temp${i}">${hour.hourly_forecast[i].temp.english}</td>
                         <td><img src="${hour.hourly_forecast[i].icon_url}" alt="weathericon"></td>
                         <td>${hour.hourly_forecast[i].wspd.english} ${hour.hourly_forecast[i].wdir.dir}</td>
                     </tr>`)
         }
+
+
+        let tempSelect = document.querySelector("#tempSelect")
+        tempSelect.addEventListener("click", e => {
+            if (tempSelect.checked) {
+                localStorage.setItem('tempformat', false);
+
+                document.querySelector("#low").innerHTML = localStorage.getItem("lowC")
+                document.querySelector("#currTemp").innerHTML = localStorage.getItem("currIcon")
+                document.querySelector("#high").innerHTML = localStorage.getItem("highC")
+
+
+                for (var i = 0; i < 9; i++) {
+                    document.querySelector(`#temp${i}`).innerHTML = hour.hourly_forecast[i].temp.metric
+                }
+            } else {
+                localStorage.setItem('tempformat', true);
+
+                document.querySelector("#low").innerHTML = localStorage.getItem("lowF")
+                document.querySelector("#currTemp").innerHTML = localStorage.getItem("currIcon")
+                document.querySelector("#high").innerHTML = localStorage.getItem("highF")
+                for (var i = 0; i < 9; i++) {
+                    document.querySelector(`#temp${i}`).innerHTML = hour.hourly_forecast[i].temp.english
+                }
+            }
+            let timeSelect = document.querySelector("#timeSelect")
+            timeSelect.addEventListener("click", e => {
+                if (timeSelect.checked) {
+                    for (var i = 0; i < 9; i++) {
+                        if (hour.hourly_forecast[i].FCTTIME.hour < 10) {
+                            document.querySelector(`#hrt${i}`).innerHTML = "0" + hour.hourly_forecast[i].FCTTIME.hour + "00"
+                        } else {
+                            document.querySelector(`#hrt${i}`).innerHTML = hour.hourly_forecast[i].FCTTIME.hour + "00"
+
+                        }
+                    }
+                } else {
+                    for (var i = 0; i < 9; i++) {
+                        document.querySelector(`#hrt${i}`).innerHTML = hour.hourly_forecast[i].FCTTIME.civil
+
+                    }
+                }
+            })
+
+        })
     }
     // get geoLocation
     getGeo() {
@@ -86,28 +132,32 @@ class Run {
         oReq.open("POST", url);
         oReq.send();
     }
-    viewSet(){
+    viewSet() {
 
     }
-    // viewMap(){
-        
-    //     var var_location = new google.maps.LatLng(localStorage.getItem("lat"), localStorage.getItem("lng"))
-    //     var var_mapoptions = {
-    //         center: var_location,
-    //         zoom: 13, 
-    //         mapTypeId: google.maps.MapTypeId.ROADMAP,
-    //         mapTypeControl: false,
-    //         panControl: false,
-    //         rotateControl: false,
-    //         streetViewControl: false
-    //     }
-    //     var var_map = new google.maps.Map(
-    //         document.getElementById("map"),
-    //         var_mapoptions
-    //     )
-        
-    //     var_marker.setMap(var_map)
-        
+    init_map() {
+        var var_location = new google.maps.LatLng(localStorage.getItem("lat"), localStorage.getItem("lng"))
+        var var_mapoptions = {
+            center: var_location,
+            zoom: 13,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            mapTypeControl: false,
+            panControl: false,
+            rotateControl: false,
+            streetViewControl: false
+        }
+        var var_map = new google.maps.Map(
+            document.getElementById("map"),
+            var_mapoptions
+        )
 
-    // }
+
+        var marker = new google.maps.Marker({
+            position: var_location,
+            map: var_map
+        })
+
+
+    }
+
 }

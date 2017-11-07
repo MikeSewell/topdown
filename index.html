@@ -15,7 +15,8 @@
         <div class="container">
 
             <section id="main">
-                <p id="setIcon"><a href="#setting"><i class="fa fa-cog fa-spin fa-2x fa-fw"></i></a></p>
+                <p id="setIcon"><a href="#setting"><i class="fa fa-cog fa-2x fa-fw"></i></a></p>
+                <p id="favIcon"><a href="#favorites"><i class="fa fa-star fa-2x" ></i></a></p>
 
             </section>
         </div>
@@ -43,7 +44,7 @@
 
             <section id="change">
                 <div class="row">
-                    <p>Temp Format C/F</p>
+                    <p>Temp Format F/C</p>
                     <!-- Rounded switch -->
                     <label class="switch">
                         <input id="tempSelect" type="checkbox">
@@ -60,14 +61,14 @@
                 <div class="row">
                     <p>Auto Location</p>
                     <label class="switch">
-                        <input id="autoGeo" type="checkbox" checked>
+                        <input id="autoGeo" type="checkbox" checked disabled>
                         <span class="slider round"></span>
                     </label>
                 </div>
                 <div class="row">
                     <p>Auto Fullscreen</p>
                     <label class="switch">
-                        <input id="autoFull" type="checkbox" checked>
+                        <input id="autoFull" type="checkbox" checked disabled>
                         <span class="slider round"></span>
                     </label>
                 </div>
@@ -87,10 +88,10 @@
             <p class="me">Created By Mike Sewell</p>
         </section>
     </div>
-    <section>
+    <section id="favorites">
         <h1>Favorites</h1>
 
-        <div class="wrapper">
+        <div class="">
             <section id="favZip">
                 <label for="">Zip</label>
                 <input type="tel" minlength="5" maxlength="5" name="" id="">
@@ -100,10 +101,8 @@
         <div id="map" class="map_canvas"></div>
         <p class="me">Created By Mike Sewell</p>
     </section>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB36uxNXnRegfbLfbUbjRLElKy_5d0CReI"></script>
     <script src="main.js"></script>
-    <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKTaI3tOSjLN-HO2XC0BOKbSWHa1zHWdY&callback=initMap"> -->
-
-    </script>
 </body>
 
 </html>

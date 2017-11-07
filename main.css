@@ -32,6 +32,12 @@ body {
     right: 1rem;
 }
 
+#favIcon {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+}
+
 a {
     color: #333533;
     cursor: pointer;
@@ -119,7 +125,13 @@ h1 {
 .inputsec {
     display: flex;
     justify-content: space-between;
-    padding: 1rem 0;
+    padding: .5rem 0;
+}
+
+.inputsec input {
+    background-color: #E8EDDF;
+    border: 2px #333533 solid;
+    padding: 0.4rem;
 }
 
 
@@ -127,16 +139,37 @@ h1 {
 
 
 /* Favorites Section ================================================================= */
-#favZip{
+
+#favZip {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     background-color: #F5CB5C;
+    align-items: center;
+    padding: 1rem;
 }
+
+#map {
+    width: 100%;
+    height: 28rem;
+}
+
+#favZip button {
+    background-color: grey;
+    border-radius: 5px;
+    padding: .3rem .7rem;
+}
+
+#favZip input {
+    background-color: #E8EDDF;
+    border: 2px #333533 solid;
+    padding: 0.4rem;
+}
+
 
 /* Favorites Section end */
 
 
-/* used code */
+/* sourced code */
 
 
 /* The switch - the box around the slider */
@@ -217,7 +250,7 @@ input:checked+.slider:before {
 #main {
     background: url(https://static.radulescu.me/examples/clouds/clouds1000.png);
     background: url(https://static.radulescu.me/examples/clouds/clouds1000.png) 0 200px, url(https://static.radulescu.me/examples/clouds/clouds1200_1.png) 0 300px, url(https://static.radulescu.me/examples/clouds/clouds1000_blur3.png) 100px 250px;
-    animation: wind 20s linear infinite;
+    animation: wind 100s linear infinite;
 }
 
 @keyframes wind {
