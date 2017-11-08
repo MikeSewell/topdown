@@ -11,9 +11,10 @@ class Run {
         this.getHL()
         this.getCurrTemp()
         this.getHourly()
-        // this.showData()
+        this.showData()
         this.init_map()
         this.changeZip()
+        this.zipArr = []
 
     }
     // get high and low temp
@@ -136,14 +137,19 @@ class Run {
     changeZip() {
         let zipInput = document.querySelector("#zipChange")
         zipInput.addEventListener("keyup", e => {
-            if(zipInput.value.length == 5){
+            if (zipInput.value.length == 5) {
                 console.log(zipInput.value);
             }
         })
         let addZip = document.querySelector("#addZip")
         document.querySelector("#favZip button").addEventListener("click", e => {
             console.log('click');
-            
+            if (addZip.value.length == 5) {
+                this.zipArr.push(addZip.value)
+                console.log(this.zipArr);
+            }
+
+
         })
 
 
