@@ -1,7 +1,6 @@
 window.addEventListener("load", e => {
 
     let assign = new Run();
-    // init_map();
 
 
 });
@@ -12,8 +11,9 @@ class Run {
         this.getHL()
         this.getCurrTemp()
         this.getHourly()
-        this.showData()
+        // this.showData()
         this.init_map()
+        this.changeZip()
 
     }
     // get high and low temp
@@ -97,27 +97,28 @@ class Run {
                     document.querySelector(`#temp${i}`).innerHTML = hour.hourly_forecast[i].temp.english
                 }
             }
-            let timeSelect = document.querySelector("#timeSelect")
-            timeSelect.addEventListener("click", e => {
-                if (timeSelect.checked) {
-                    for (var i = 0; i < 9; i++) {
-                        if (hour.hourly_forecast[i].FCTTIME.hour < 10) {
-                            document.querySelector(`#hrt${i}`).innerHTML = "0" + hour.hourly_forecast[i].FCTTIME.hour + "00"
-                        } else {
-                            document.querySelector(`#hrt${i}`).innerHTML = hour.hourly_forecast[i].FCTTIME.hour + "00"
-
-                        }
-                    }
-                } else {
-                    for (var i = 0; i < 9; i++) {
-                        document.querySelector(`#hrt${i}`).innerHTML = hour.hourly_forecast[i].FCTTIME.civil
+        })
+        let timeSelect = document.querySelector("#timeSelect")
+        timeSelect.addEventListener("click", e => {
+            if (timeSelect.checked) {
+                for (var i = 0; i < 9; i++) {
+                    if (hour.hourly_forecast[i].FCTTIME.hour < 10) {
+                        document.querySelector(`#hrt${i}`).innerHTML = "0" + hour.hourly_forecast[i].FCTTIME.hour + "00"
+                    } else {
+                        document.querySelector(`#hrt${i}`).innerHTML = hour.hourly_forecast[i].FCTTIME.hour + "00"
 
                     }
                 }
-            })
+            } else {
+                for (var i = 0; i < 9; i++) {
+                    document.querySelector(`#hrt${i}`).innerHTML = hour.hourly_forecast[i].FCTTIME.civil
 
+                }
+            }
         })
     }
+
+
     // get geoLocation
     getGeo() {
         let url = "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyAKTaI3tOSjLN-HO2XC0BOKbSWHa1zHWdY"
@@ -132,7 +133,19 @@ class Run {
         oReq.open("POST", url);
         oReq.send();
     }
-    viewSet() {
+    changeZip() {
+        let zipInput = document.querySelector("#zipChange")
+        zipInput.addEventListener("keyup", e => {
+            if(zipInput.value.length == 5){
+                console.log(zipInput.value);
+            }
+        })
+        let addZip = document.querySelector("#addZip")
+        document.querySelector("#favZip button").addEventListener("click", e => {
+            console.log('click');
+            
+        })
+
 
     }
     init_map() {

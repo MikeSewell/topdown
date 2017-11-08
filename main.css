@@ -129,7 +129,7 @@ h1 {
 }
 
 .inputsec input {
-    background-color: #E8EDDF;
+    background-color: #ccc;
     border: 2px #333533 solid;
     padding: 0.4rem;
 }
@@ -160,7 +160,7 @@ h1 {
 }
 
 #favZip input {
-    background-color: #E8EDDF;
+    background-color: #ccc;
     border: 2px #333533 solid;
     padding: 0.4rem;
 }
