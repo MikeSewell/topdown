@@ -12,12 +12,29 @@ class Run {
         this.getCurrTemp()
         this.getHourly()
         this.showData()
+        this.nav()
         this.init_map()
         this.changeZip()
-        this.ZipToLL()
+
         this.map = "";
         this.markers = []
         this.zipArr = []
+
+    }
+    nav(){
+        let dash = document.querySelector("#dashboard")
+        document.querySelector("#setIcon").addEventListener("click",e=>{
+            dash.classList.add("disableDash");
+        })
+        document.querySelector("#favIcon").addEventListener("click",e=>{
+            dash.classList.add("disableDash");
+        })
+        document.querySelector("#backIcon").addEventListener("click",e=>{
+            dash.classList.remove("disableDash");
+        })
+        document.querySelector("#fwdIcon").addEventListener("click",e=>{
+            dash.classList.remove("disableDash");
+        })
 
     }
     // get high and low temp
@@ -153,7 +170,7 @@ class Run {
         let addZip = document.querySelector("#addZip")
         document.querySelector("#favZip button").addEventListener("click", e => {
             if (addZip.value.length == 5 && (!isNaN(addZip.value))) {
-                this.addZip(addZip.value)
+                this.addMarkerToMap()
             }
         })
     }
@@ -171,26 +188,8 @@ class Run {
         oReq.addEventListener("load", reqListener);
         oReq.open("GET", url);
         oReq.send();
-
-        this.zipArr.push(localStorage.getItem('tempzip'))
-        let obj = localStorage.getItem('templat')
-        // let loc = JSON.parse(obj)
-        // console.log(obj);
-        
-        this.addMarkerToMap(localStorage.getItem('templat'), localStorage.getItem('templng'),"test")
-
-        // var myLatlng = new google.maps.LatLng(localStorage.getItem('tempzip'));
-
-        // let marker = new google.maps.Marker({
-        //     position: myLatlng,
-        //     title: "Hello World!"
-        // });
-
     }
-    // addMarker({
-
-    // })
-
+    
     init_map() {
         var var_location = new google.maps.LatLng(localStorage.getItem("lat"), localStorage.getItem("lng"))
         var var_mapoptions = {
@@ -228,20 +227,22 @@ class Run {
 
 
 
-    addMarkerToMap(lat, long, htmlMarkupForInfoWindow) {
+    addMarkerToMap() {
         // var infowindow = new google.maps.InfoWindow();
-        var myLatLng = new google.maps.LatLng(lat, long);
+        let lat = localStorage.getItem('userlat')
+        let lng = localStorage.getItem('userlng')
+        var myLatLng = new google.maps.LatLng(lat, lng);
         var marker = new google.maps.Marker({
             position: myLatLng,
-            map: map,
+            map: this.map,
             animation: google.maps.Animation.DROP
         });
 
         //Gives each marker an Id for the on click
         // markerCount++;
 
-        //Creates the event listener for clicking the marker
-        //and places the marker on the map 
+        // Creates the event listener for clicking the marker
+        // and places the marker on the map 
         // google.maps.event.addListener(marker, 'click', (function (marker, markerCount) {
         //     return function () {
         //         infowindow.setContent(htmlMarkupForInfoWindow);
@@ -249,8 +250,8 @@ class Run {
         //     }
         // })(marker, markerCount));
 
-        //Pans map to the new location of the marker
-        map.panTo(myLatLng)
+        // Pans map to the new location of the marker
+        // this.map.panTo(myLatLng)
     }
 
 }

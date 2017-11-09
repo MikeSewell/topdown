@@ -15,17 +15,31 @@ html {
     width: 100%;
     overflow-x: hidden;
 }
-
+.disableDash{
+    display: none;
+}
 #dashboard,
 #setting,
 #favorites {
+    overflow-x: hidden;
+    min-height: 375px;
+    /* approximate max height */
+    transition-property: all;
+    transition-duration: .5s;
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
     min-width: 375px;
+}
+.der.closed {
+    max-width: 0;
 }
 /* #setting,favorites{
     display: none;
 } */
+/* .slideLeft{
+     transition: 1s;
+} */
 
-.back {
+/* .back {
     animation-duration: 3s;
     animation-name: slidein;
 }
@@ -39,7 +53,7 @@ html {
         margin-left: 0%;
         width: 100%;
     }
-}
+} */
 
 
 /* dashboard section */
