@@ -14,6 +14,9 @@ class Run {
         this.showData()
         this.init_map()
         this.changeZip()
+        this.ZipToLL()
+        this.map = "";
+        this.markers = []
         this.zipArr = []
 
     }
@@ -122,38 +125,72 @@ class Run {
 
     // get geoLocation
     getGeo() {
-        let url = "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyAKTaI3tOSjLN-HO2XC0BOKbSWHa1zHWdY"
-
-        function reqListener() {
-            let d = JSON.parse(this.responseText);
-            localStorage.setItem('lat', d.location.lat.toFixed(1))
-            localStorage.setItem('lng', d.location.lng.toFixed(1))
+        try {
+            let url = "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyAKTaI3tOSjLN-HO2XC0BOKbSWHa1zHWdY"
+    
+            function reqListener() {
+                let d = JSON.parse(this.responseText);
+            }
+            var oReq = new XMLHttpRequest();
+            oReq.addEventListener("load", reqListener);
+            oReq.open("POST", url);
+            oReq.send();
+            
+        } catch (error) {
+            
+            localStorage.setItem('lat', localStorage.getItem('userlat'))
+            localStorage.setItem('lng', localStorage.getItem('userlng'))
+            
         }
-        var oReq = new XMLHttpRequest();
-        oReq.addEventListener("load", reqListener);
-        oReq.open("POST", url);
-        oReq.send();
     }
     changeZip() {
         let zipInput = document.querySelector("#zipChange")
         zipInput.addEventListener("keyup", e => {
             if (zipInput.value.length == 5) {
-                console.log(zipInput.value);
+                this.ZipToLL(zipInput.value)
             }
         })
         let addZip = document.querySelector("#addZip")
         document.querySelector("#favZip button").addEventListener("click", e => {
-            console.log('click');
-            if (addZip.value.length == 5) {
-                this.zipArr.push(addZip.value)
-                console.log(this.zipArr);
+            if (addZip.value.length == 5 && (!isNaN(addZip.value))) {
+                this.addZip(addZip.value)
             }
-
-
         })
+    }
+    ZipToLL(zip) {
 
+        let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${zip}`;
+
+        function reqListener() {
+            let d = JSON.parse(this.responseText);
+            // console.log(d.results[0]);
+            localStorage.setItem('userlat', d.results[0].geometry.location.lat)
+            localStorage.setItem('userlng', d.results[0].geometry.location.lng)
+        }
+        var oReq = new XMLHttpRequest();
+        oReq.addEventListener("load", reqListener);
+        oReq.open("GET", url);
+        oReq.send();
+
+        this.zipArr.push(localStorage.getItem('tempzip'))
+        let obj = localStorage.getItem('templat')
+        // let loc = JSON.parse(obj)
+        // console.log(obj);
+        
+        this.addMarkerToMap(localStorage.getItem('templat'), localStorage.getItem('templng'),"test")
+
+        // var myLatlng = new google.maps.LatLng(localStorage.getItem('tempzip'));
+
+        // let marker = new google.maps.Marker({
+        //     position: myLatlng,
+        //     title: "Hello World!"
+        // });
 
     }
+    // addMarker({
+
+    // })
+
     init_map() {
         var var_location = new google.maps.LatLng(localStorage.getItem("lat"), localStorage.getItem("lng"))
         var var_mapoptions = {
@@ -165,7 +202,7 @@ class Run {
             rotateControl: false,
             streetViewControl: false
         }
-        var var_map = new google.maps.Map(
+        this.map = new google.maps.Map(
             document.getElementById("map"),
             var_mapoptions
         )
@@ -173,10 +210,47 @@ class Run {
 
         var marker = new google.maps.Marker({
             position: var_location,
-            map: var_map
+            map: this.map
         })
 
+        // Loop through our array of markers & place each one on the map  
+        //    for (i = 0; i < this.markers.length; i++) {
+        //        var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
+        //        bounds.extend(position);
+        //        marker = new google.maps.Marker({
+        //            position: position,
+        //            map: this.map,
+        //            title: markers[i][0]
+         //        });
+        //     }
 
+    }
+
+
+
+    addMarkerToMap(lat, long, htmlMarkupForInfoWindow) {
+        // var infowindow = new google.maps.InfoWindow();
+        var myLatLng = new google.maps.LatLng(lat, long);
+        var marker = new google.maps.Marker({
+            position: myLatLng,
+            map: map,
+            animation: google.maps.Animation.DROP
+        });
+
+        //Gives each marker an Id for the on click
+        // markerCount++;
+
+        //Creates the event listener for clicking the marker
+        //and places the marker on the map 
+        // google.maps.event.addListener(marker, 'click', (function (marker, markerCount) {
+        //     return function () {
+        //         infowindow.setContent(htmlMarkupForInfoWindow);
+        //         infowindow.open(map, marker);
+        //     }
+        // })(marker, markerCount));
+
+        //Pans map to the new location of the marker
+        map.panTo(myLatLng)
     }
 
 }
