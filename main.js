@@ -163,8 +163,9 @@ class Run {
     changeZip() {
         let zipInput = document.querySelector("#zipChange")
         zipInput.addEventListener("keyup", e => {
-            if (zipInput.value.length == 5) {
+            if (zipInput.value.length == 5 && (!isNaN(zipInput.value))) {
                 this.ZipToLL(zipInput.value)
+                location.reload()
             }
         })
         let addZip = document.querySelector("#addZip")
