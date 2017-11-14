@@ -10,11 +10,7 @@ class Run {
         this.map = {};
         this.markers = []
         this.zipArr = []
-
         this.setting()
-
-
-
     }
     setting() {
         let geo = document.querySelector("#geoLoc")
@@ -93,7 +89,6 @@ class Run {
             // Convert to JSON
             return response.json();
         }).then(function (j) {
-            console.log(j);
             localStorage.setItem('currIcon', j.current_observation.icon_url);
             localStorage.setItem('currTempF', j.current_observation.feelslike_f);
             localStorage.setItem('currTempC', j.current_observation.feelslike_c);
@@ -106,7 +101,6 @@ class Run {
             // Convert to JSON
             return response.json();
         }).then(function (j) {
-            console.log(j);
             localStorage.setItem("tempList", JSON.stringify(j))
         })
         let newPromise = new Promise((resolve, reject) => {
@@ -192,8 +186,6 @@ class Run {
 
             function reqListener() {
                 let d = JSON.parse(this.responseText);
-                console.log(d);
-
                 localStorage.setItem("lat", d.location.lat.toFixed(1))
                 localStorage.setItem("lng", d.location.lng.toFixed(1))
             }
@@ -220,9 +212,6 @@ class Run {
                 this.getCurrTemp()
                 this.getHourly()
                 location.reload()
-
-
-
             }
         })
         let addZip = document.querySelector("#addZip")
@@ -275,24 +264,12 @@ class Run {
         })
 
         if (localStorage.getItem("markers")) {
-            // let data = JSON.parse('{ "data":[' + localStorage.getItem("markers") + ']}')
             let data = localStorage.getItem("markers").split("|")
 
             console.log(data);
             console.log(data.length);
             console.log(data[0].length);
 
-            // Loop through our array of markers & place each one on the map  
-            // for (let i = 0; i < data.length; i++) {
-            //     // console.log(data[i][0]+","+data[i][1]);
-
-            //     var myLatLng = new google.maps.LatLng(data[i][0], data[i][1]);
-            //     bounds.extend(myLatLng);
-            //     marker = new google.maps.Marker({
-            //         position: myLatLng,
-            //         map: this.map
-            //     });
-            // }
         }
 
     }
@@ -300,21 +277,11 @@ class Run {
 
     // add marker to map
     addMarkerToMap() {
-        // if (localStorage.getItem("markers")) {
-        //     // let data = JSON.parse('{ "data":[' + localStorage.getItem("markers") + ']}')
-        //     let data = localStorage.getItem("markers").split("|")
-        // }else{
-
-        // }
-        // var infowindow = new google.maps.InfoWindow();
         let latt = parseFloat(localStorage.getItem('userlat'))
         let lngt = parseFloat(localStorage.getItem('userlng'))
-        // console.log(latt.toFixed(1));
-        // let lngt = parseFloat(localStorage.getItem('userlng'))
+
         let lat = latt.toFixed(1)
-        // console.log(lat);
         let lng = lngt.toFixed(1)
-        // console.log(lat,lng);
 
         var myLatLng = new google.maps.LatLng(lat, lng);
         var marker = new google.maps.Marker({
@@ -322,9 +289,6 @@ class Run {
             map: this.map,
             animation: google.maps.Animation.DROP
         });
-        // let pos = "[" + lat + "," + lng + "]"
-        // let pos = lat,lng + "|"
-        // console.log(pos);
 
         this.markers.push(lat, lng + "|")
         this.map.panTo(myLatLng)

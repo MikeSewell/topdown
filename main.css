@@ -353,8 +353,8 @@ input:checked+.slider:before {
         background-position: 1000px 200px, 1200px 300px, 1100px 250px;
     }
 }
-/* media q */
 
+/* media q */
 /*iPhone 6 Portrait*/
 
 @media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (orientation: portrait) {
