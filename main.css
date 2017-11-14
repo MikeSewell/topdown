@@ -15,31 +15,33 @@ html {
     width: 100%;
     overflow-x: hidden;
 }
-.disableDash{
+
+.disableDash {
     display: none;
 }
+
 #dashboard,
 #setting,
 #favorites {
     overflow-x: hidden;
-    min-height: 375px;
-    /* approximate max height */
-    transition-property: all;
-    transition-duration: .5s;
-    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
-    min-width: 375px;
+    /* min-height: 375px; */
+    min-width: 320px;
 }
+
 .der.closed {
     max-width: 0;
 }
+
+
 /* #setting,favorites{
     display: none;
 } */
-/* .slideLeft{
-     transition: 1s;
-} */
 
-/* .back {
+.slideLeft {
+    transition: 1s;
+}
+
+*/ .back {
     animation-duration: 3s;
     animation-name: slidein;
 }
@@ -53,7 +55,7 @@ html {
         margin-left: 0%;
         width: 100%;
     }
-} */
+}
 
 
 /* dashboard section */
@@ -73,6 +75,24 @@ body {
 #low,
 #high {
     font-size: 3rem;
+}
+
+#currTemp {
+    width: 10rem;
+}
+
+#low {
+    color: #1278FF;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+
+#high {
+    color: #C92623;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+
+#currTemp img {
+    width: 100%;
 }
 
 #setIcon {
@@ -146,6 +166,7 @@ h1 {
 }
 
 #aboutP2 {
+
     background-color: #F5CB5D;
     padding: 1rem;
 }
@@ -158,7 +179,7 @@ h1 {
 }
 
 #change {
-    height: 21rem;
+    height: 18.7rem;
 }
 
 #change p {}
@@ -217,7 +238,7 @@ h1 {
 
 #map {
     width: 100%;
-    height: 29.5rem;
+    height: 23rem;
 }
 
 #favZip button {
@@ -241,14 +262,10 @@ h1 {
 #fwdIcon a {
     color: #F5CB5D;
 }
-
-
 /* Favorites Section end */
 
 
 /* sourced code */
-
-
 /* The switch - the box around the slider */
 
 .switch {
@@ -258,13 +275,11 @@ h1 {
     height: 34px;
 }
 
-
 /* Hide default HTML checkbox */
 
 .switch input {
     display: none;
 }
-
 
 /* The slider */
 
@@ -318,7 +333,7 @@ input:checked+.slider:before {
 }
 
 
-/*  */
+/* moving clouds */
 
 .container {
     background-color: #007ced;
@@ -336,5 +351,36 @@ input:checked+.slider:before {
     }
     100% {
         background-position: 1000px 200px, 1200px 300px, 1100px 250px;
+    }
+}
+/* media q */
+
+/*iPhone 6 Portrait*/
+
+@media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (orientation: portrait) {
+    #dashboard,
+    #setting,
+    #favorites {
+        min-width: 375px;
+    }
+
+    #map {
+        height: 29rem;
+    }
+
+    #change {
+        height: 21.7rem;
+    }
+}
+/*iPhone 6+ Portrait*/
+@media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation: portrait) {
+    #dashboard,#setting,#favorites{
+        min-width: 414px;
+    }
+    #map{
+        height: 33.5rem;
+    }
+    #change{
+        height: 25.5rem;
     }
 }

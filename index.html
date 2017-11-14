@@ -12,7 +12,7 @@
 
 <body>
     <!-- <div class="tst"> -->
-        
+
     <div id="dashboard">
         <div class="container">
 
@@ -46,7 +46,7 @@
 
             <section id="change">
                 <div class="row">
-                    <p>Temp Format F/C</p>
+                    <p>Temp Format C</p>
                     <!-- Rounded switch -->
                     <label class="switch">
                         <input id="tempSelect" type="checkbox">
@@ -61,16 +61,16 @@
                     </label>
                 </div>
                 <div class="row">
-                    <p>Auto Location</p>
+                    <p>Enabled Map</p>
                     <label class="switch">
                         <input id="autoGeo" type="checkbox" checked disabled>
                         <span class="slider round"></span>
                     </label>
                 </div>
                 <div class="row">
-                    <p>Auto Fullscreen</p>
+                    <p>GeoLocation</p>
                     <label class="switch">
-                        <input id="autoFull" type="checkbox" checked disabled>
+                        <input id="geoLoc" type="checkbox" checked>
                         <span class="slider round"></span>
                     </label>
                 </div>
@@ -78,15 +78,15 @@
                     <label for="zip">Zip</label><input type="tel" minlength="5" maxlength="5" name="zip" id="zipChange">
                 </div>
                 <div class="inputsec">
-                    <label for="email">Email</label><input type="text" name="email" id="">
+                    <label for="email">Email</label><input type="text" name="email" id="" disabled>
                 </div>
-                <button type="button">Save</button>
+                <!-- <button type="button">Save</button> -->
             </section>
         </div>
         <section>
-            <p id="aboutP">Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et,
-                porttitor at sem. Cras ultricies ligula sed magna dictum porta.</p>
-            <p id="aboutP2">Vivamus suscipit tortor eget felis porttitor volutpat. Curabitur non nulla</p>
+            <p id="aboutP">Instructions: ios - Open in Safari. Tap the share icon at the bottom of the screen. Then hit"Add to Home Screen".
+                Hit "ok".</p>
+            <p id="aboutP2">This application was created for a school project to show basic HTML, CSS and, Javascript.</p>
             <p class="me">Created By Mike Sewell</p>
         </section>
     </div>
@@ -105,7 +105,7 @@
         <div id="map" class="map_canvas"></div>
         <p class="me">Created By Mike Sewell</p>
     </section>
-<!-- </div> -->
+    <!-- </div> -->
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB36uxNXnRegfbLfbUbjRLElKy_5d0CReI"></script>
     <script src="main.js"></script>
