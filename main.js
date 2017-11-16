@@ -13,6 +13,7 @@ class Run {
         this.test = "test"
         this.lat = ""
         this.lng = ""
+
         localStorage.setItem("tempList", "")
         localStorage.setItem("lowF", "")
         localStorage.setItem("highF", "")
@@ -138,9 +139,19 @@ class Run {
         }
 
         function showData() {
+            // display day or night Icons
+            var d = new Date();
+            var n = d.getHours();
+            let dayNight = ""
+            if ((n >= 1 && n < 5) || (n >= 18 && n <= 24)) {
+                dayNight = "night"
+            } else {
+                dayNight = "day"
+            }
+
             // populate header
             let dash = document.querySelector("#main")
-            document.querySelector("#currImg").src = `./css/iconpack/day/${localStorage.getItem("currIcon")}.png`
+            document.querySelector("#currImg").src = `./css/iconpack/${dayNight}/${localStorage.getItem("currIcon")}.png`
             document.querySelector("#high").innerHTML = localStorage.getItem("highF")
             document.querySelector("#low").innerHTML = localStorage.getItem("lowF")
 
@@ -153,7 +164,7 @@ class Run {
                 list.insertAdjacentHTML("beforeend", `<tr>
                         <td id="hrt${i}">${hour.hourly_forecast[i].FCTTIME.civil}</td>
                         <td id="temp${i}">${hour.hourly_forecast[i].temp.english} F</td>
-                        <td><img class="weatherIcon" src="./css/iconpack/day/${hour.hourly_forecast[i].icon}.png" alt="weathericon"></td>
+                        <td><img class="weatherIcon" src="./css/iconpack/${dayNight}/${hour.hourly_forecast[i].icon}.png" alt="weathericon"></td>
                         <td>${hour.hourly_forecast[i].wspd.english} ${hour.hourly_forecast[i].wdir.dir}</td>
                     </tr>`)
             }
@@ -280,7 +291,7 @@ class Run {
     }
     // build map
     init_map(lat = 28.542, lng = -81.376) {
-        var var_location = new google.maps.LatLng(localStorage.getItem("lat"), localStorage.getItem("lng"))
+        var var_location = new google.maps.LatLng(lat,lng)
         var var_mapoptions = {
             center: var_location,
             zoom: 10,
@@ -306,8 +317,8 @@ class Run {
         let latt = parseFloat(localStorage.getItem('lat'))
         let lngt = parseFloat(localStorage.getItem('lng'))
 
-        let lat = latt.toFixed(1)
-        let lng = lngt.toFixed(1)
+        let lat = latt.toFixed(5)
+        let lng = lngt.toFixed(5)
 
         var myLatLng = new google.maps.LatLng(lat, lng);
         var marker = new google.maps.Marker({
