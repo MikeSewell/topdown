@@ -106,6 +106,9 @@ body {
     top: 1rem;
     left: 1rem;
 }
+.weatherIcon{
+    width: 3rem;
+}
 
 a {
     color: #333533;
