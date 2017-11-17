@@ -8,7 +8,8 @@ window.addEventListener("load", e => {
 
 class Run {
     constructor() {
-        this.map = {};
+        this.map = {}
+        this.uniqueId = 0
         this.markers = []
         this.zipArr = []
         this.test = "test"
@@ -105,6 +106,7 @@ class Run {
                 localStorage.setItem('lowC', j.forecast.simpleforecast.forecastday[0].low.celsius);
                 localStorage.setItem('highC', j.forecast.simpleforecast.forecastday[0].high.celsius);
                 let evt = new Event("currTemphilo")
+
                 document.dispatchEvent(evt)
                 return
             })
@@ -144,10 +146,13 @@ class Run {
             var d = new Date();
             var n = d.getHours();
             let dayNight = ""
+            let skycolor = document.querySelector(".container")
             if ((n >= 1 && n < 5) || (n >= 18 && n <= 24)) {
                 dayNight = "night"
+                skycolor.style.backgroundColor = "#364858"
             } else {
                 dayNight = "day"
+                skycolor.style.backgroundColor = "#007ced"
             }
 
             // populate header
@@ -292,7 +297,7 @@ class Run {
     }
     // build map
     init_map(lat = 28.542, lng = -81.376) {
-        var var_location = new google.maps.LatLng(lat,lng)
+        var var_location = new google.maps.LatLng(lat, lng)
         var var_mapoptions = {
             center: var_location,
             zoom: 10,
@@ -321,12 +326,44 @@ class Run {
         let lat = latt.toFixed(5)
         let lng = lngt.toFixed(5)
 
-        var myLatLng = new google.maps.LatLng(lat, lng);
-        var marker = new google.maps.Marker({
-            position: myLatLng,
-            map: this.map,
-            animation: google.maps.Animation.DROP
-        });
-        this.map.panTo(myLatLng)
+
+        let url = "http://api.wunderground.com/api/47e6f06078fb48ae/conditions/q/" + lat + "," + lng + ".json"
+        fetch(url).then(function (response) {
+            return response.json();
+        }).then(function (j) {
+            let evt = new Event("addpin")
+            evt.data = j
+            document.dispatchEvent(evt)
+        })
+        document.addEventListener("addpin", addMarker.bind(this))
+
+
+        // add marker
+        function addMarker(e) {
+            console.log(e.data);
+
+            var contentString = `<h2>${e.data.current_observation.display_location.full}</h2>
+            <p><img src="./css/iconpack/day/${e.data.current_observation.icon}.png" alt=""></p>
+            <p>Current Temp: ${e.data.current_observation.feelslike_f}F/${e.data.current_observation.feelslike_c}C</p>`
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+            var myLatLng = new google.maps.LatLng(lat, lng);
+            var marker = new google.maps.Marker({
+                position: myLatLng,
+                map: this.map,
+                animation: google.maps.Animation.DROP
+            });
+            marker.id = this.uniqueId;
+            this.markers.push(marker)
+            this.uniqueId++;
+            this.map.panTo(myLatLng)
+
+            marker.addListener('click', function () {
+                infowindow.open(map, marker);
+            });
+
+        }
+
     }
 }
